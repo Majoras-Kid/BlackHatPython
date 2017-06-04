@@ -95,7 +95,7 @@ def run_command(command):
 
 	#trim the newline
 	command = command.rstrip()
-
+	print("Command = %s" %command)
 	#run the command and get the output back
 	try:
 		output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
@@ -153,7 +153,7 @@ def client_handler(client_socket):
 		
 		while True:
 			#show a simple prompt
-			
+			client_socket.send("<BHP:#> ")
 			print "Send <BHP:#>"
 
 			#now recieve until we see a linefeed

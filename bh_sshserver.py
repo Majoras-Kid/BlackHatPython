@@ -20,10 +20,14 @@ server = sys.argv[1]
 ssh_port = int(sys.argv[2])
 try:
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	print "Socket created"
 	sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+	print "Socket op set"
 	sock.bind((server,ssh_port))
+	print "Socked bind"
 	print("[+] Listening for connection ...")
 	client, addr = sock.accept()
+	print "Socket accepted"
 except Exception, e:
 	print("[-] Listen failed:" + str(e))
 	sys.exit(1)
