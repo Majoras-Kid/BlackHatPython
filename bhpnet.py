@@ -31,6 +31,7 @@ def usage():
 	sys.exit(0)
 
 def client_sender(buffer):
+	print "In client_sender"
 	client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 	try:
@@ -38,6 +39,7 @@ def client_sender(buffer):
 		client.connect((target,port))
 
 		if len(buffer):
+			print("Send \"%s\"" %buffer)
 			client.send(buffer)
 
 
@@ -47,13 +49,13 @@ def client_sender(buffer):
 			response = ""
 
 			while recv_len:
-				data		= client.recv(4096)
-				recv_len 	= len(data)
-				response 	+= data
+				data = client.recv(4096)
+				recv_len= len(data)
+				response+= data
 
-				if recv_len > 4096:
+				if recv_len < 4096:
 					break
-			print response
+			print response,
 
 			#wait for more input
 			buffer = raw_input("")
@@ -85,6 +87,7 @@ def server_loop():
 
 		#spin of a thread to handle our new client
 		client_thread = threading.Thread(target=client_handler,args=(client_socket,))
+		print "Thread Startet"
 		client_thread.start()
 
 
@@ -95,7 +98,6 @@ def run_command(command):
 
 	#run the command and get the output back
 	try:
-
 		output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
 
 	except:
@@ -109,6 +111,7 @@ def client_handler(client_socket):
 	global execute
 	global command
 
+	print "In Client_handler"
 	#check for upload
 	if len(upload_destination):
 
@@ -147,9 +150,11 @@ def client_handler(client_socket):
 	#now we go into another loop if a command shell was requested
 	if command:
 
+		
 		while True:
 			#show a simple prompt
-			client_socket.send("<BHP:#> ")
+			
+			print "Send <BHP:#>"
 
 			#now recieve until we see a linefeed
 			cmd_buffer = ""
