@@ -13,6 +13,7 @@ class Server (paramiko.ServerInterface):
 			return paramiko.OPEN_SUCEEDED
 		return paramiko.OPEN_FAILED_ADMINISTRATIVELY_PROHIBITED
 	def check_auth_password(self, username, passwort):
+		print "Checking name %s password %s" %(username, password)
 		if(username=='justin') and (password =='lovesthepython'):
 			return paramiko.AUTH_SUCCESSFUL
 		return paramiko.AUTH_FAILED
@@ -24,6 +25,7 @@ try:
 	sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 	print "Socket op set"
 	sock.bind((server,ssh_port))
+	sock.listen(100)
 	print "Socked bind"
 	print("[+] Listening for connection ...")
 	client, addr = sock.accept()

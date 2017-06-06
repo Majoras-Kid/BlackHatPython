@@ -95,7 +95,8 @@ def run_command(command):
 
 	#trim the newline
 	command = command.rstrip()
-	print("Command = %s" %command)
+	print("Command = %s" %command
+		)
 	#run the command and get the output back
 	try:
 		output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
