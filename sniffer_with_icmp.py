@@ -43,6 +43,23 @@ class IP(Structure):
         except:
             self.protocol = str(self.protocol_num)
 
+class ICMP(Structure):
+    
+    _fields_ = [
+        ("type",            c_uint8),
+        ("code",            c_uint8),
+        ("checksum",        c_uint16),
+        ("unused",          c_uint16),
+        ("next_hop_mtu",    c_uint16)
+        ]
+
+    def __new__(self, socket_buffer):
+        return self.from_buffer_copy(socket_buffer)
+
+    def __init__(self, socket_buffer):
+        pass
+
+        
 if os.name == "nt":
     socket_protocol = socket.IPPROTO_IP 
 else:
@@ -71,6 +88,18 @@ try:
 			
 			#print out the protocol that was detected and the hosts 
 			print "Protocol: %s %s -> %s" % (ip_header.protocol, ip_header.src_address, ip_header.dst_address)
+
+			if ip_header.protocol == "ICMP":
+
+				#calculate where our ICMP packet starts
+				offset = ip_header.ihl *4
+
+				buf = raw_buffer[offset:offset+sizeof(ICMP)]
+
+				#create our ICMP structure
+				icmp_header = ICMP(buf)
+
+				print "ICMP -> Type %d Code: %d" % (icmp_header.type, icmp_header.code)
 
 #handle CTRL-C
 except KeyboardInterrupt:
