@@ -4,10 +4,10 @@ import sys
 import threading
 import signal
 
-interface       = "wlp3s0b1"
-target_ip       = "192.168.2.110"
+interface       = "enp5s0"
+target_ip       = "192.168.2.163"
 gateway_ip      = "192.168.2.1"
-packet_count    = 10000
+packet_count    = 1000
 
 #set our interface
 conf.iface = interface
@@ -93,6 +93,7 @@ try:
 	bpf_filter = "ip host %s" %target_ip
 	packets =sniff(count=packet_count, filter=bpf_filter, iface=interface)
 
+	print "[*] Done sniffing %d packets" %packet_count
 	#write out the captured packets
 	wrpcap('arper.pcap', packets)
 
